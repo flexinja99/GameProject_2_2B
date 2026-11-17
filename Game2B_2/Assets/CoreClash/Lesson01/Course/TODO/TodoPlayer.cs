@@ -43,7 +43,17 @@ namespace CoreClash.Lesson01.Course
         // 게임 이동과 회전은 완성 코드입니다.
         private void ApplyMovement(Vector2 input)
         {
-            
+            Vector3 direction = new Vector3(input.x, 0f, input.y);
+
+            if (direction.sqrMagnitude < 0.001f) return;
+
+            direction.Normalize();
+
+            transform.position += direction * moveSpeed * Runner.DeltaTime;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Runner.DeltaTime);
+
         }
     }
 }
